@@ -1,0 +1,5 @@
+# Crawl all pages; Sitemap URL is resolved against this site's origin.
+User-agent: *
+Allow: /
+
+Sitemap: /sitemap.xml
