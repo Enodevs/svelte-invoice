@@ -36,9 +36,7 @@
 	<meta name="twitter:description" content={metaDescription.preview} />
 </svelte:head>
 
-<div
-	class="min-h-dvh bg-zinc-100 px-4 py-10 font-sans text-zinc-900 print:bg-white print:px-0 print:py-0"
->
+<div class="px-4 py-10 print:px-0 print:py-0">
 	<div class="no-print mx-auto mb-6 flex max-w-160 flex-wrap gap-3">
 		<a
 			href="/"

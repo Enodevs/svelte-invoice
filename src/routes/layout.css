@@ -5,3 +5,9 @@
 @theme {
 	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
+
+@media print {
+	.no-print {
+		display: none !important;
+	}
+}
