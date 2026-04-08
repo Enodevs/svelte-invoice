@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
+	import { browser } from "$app/environment";
 	import {
 		invoiceStore,
 		invoiceTotal,
 		lineTotal,
 		formatMoney,
-		formatDueDate
-	} from '$lib/invoiceStore';
-	import { metaDescription, titleWithSite } from '$lib/site-meta';
+		formatDueDate,
+	} from "$lib/invoiceStore";
+	import { metaDescription, titleWithSite } from "$lib/site-meta";
 
 	function printInvoice() {
 		if (browser) window.print();
@@ -16,23 +16,21 @@
 	let data = $derived($invoiceStore);
 	let total = $derived(invoiceTotal(data));
 	let dueLabel = $derived(formatDueDate(data.dueDate));
-	let showPayLink = $derived(
-		/^https?:\/\//i.test(data.payOnlineUrl.trim())
-	);
+	let showPayLink = $derived(/^https?:\/\//i.test(data.payOnlineUrl.trim()));
 
 	function brandInitial(name: string): string {
 		const t = name.trim();
-		if (!t) return 'B';
+		if (!t) return "B";
 		return t[0]!.toUpperCase();
 	}
 </script>
 
 <svelte:head>
-	<title>{titleWithSite('Invoice preview')}</title>
+	<title>{titleWithSite("Invoice preview")}</title>
 	<meta name="description" content={metaDescription.preview} />
-	<meta property="og:title" content={titleWithSite('Invoice preview')} />
+	<meta property="og:title" content={titleWithSite("Invoice preview")} />
 	<meta property="og:description" content={metaDescription.preview} />
-	<meta name="twitter:title" content={titleWithSite('Invoice preview')} />
+	<meta name="twitter:title" content={titleWithSite("Invoice preview")} />
 	<meta name="twitter:description" content={metaDescription.preview} />
 </svelte:head>
 
@@ -59,14 +57,19 @@
 		<!-- Header: title + logo -->
 		<header class="flex items-start justify-between gap-6">
 			<div>
-				<h1 class="text-3xl font-semibold tracking-tight text-zinc-900">Invoice</h1>
+				<h1 class="text-3xl font-semibold tracking-tight text-zinc-900">
+					Invoice
+				</h1>
 				<div class="mt-5 space-y-1.5 text-sm text-zinc-700">
 					<p>
-						<span class="font-semibold text-zinc-900">Invoice number</span>
-						<span class="ml-2">{data.invoiceNumber || '—'}</span>
+						<span class="font-semibold text-zinc-900"
+							>Invoice number</span
+						>
+						<span class="ml-2">{data.invoiceNumber || "—"}</span>
 					</p>
 					<p>
-						<span class="font-semibold text-zinc-900">Date due</span>
+						<span class="font-semibold text-zinc-900">Date due</span
+						>
 						<span class="ml-2">{dueLabel}</span>
 					</p>
 				</div>
@@ -93,9 +96,13 @@
 		<div class="mt-12 grid gap-10 sm:grid-cols-2">
 			<div class="text-sm leading-relaxed text-zinc-700">
 				{#if data.businessName}
-					<p class="text-base font-semibold text-zinc-900">{data.businessName}</p>
+					<p class="text-base font-semibold text-zinc-900">
+						{data.businessName}
+					</p>
 				{:else}
-					<p class="text-base font-semibold text-zinc-400">Your business</p>
+					<p class="text-base font-semibold text-zinc-400">
+						Your business
+					</p>
 				{/if}
 				{#if data.phoneEmail}
 					<p class="mt-1">{data.phoneEmail}</p>
@@ -107,12 +114,23 @@
 			<div class="text-sm sm:text-right">
 				<p class="font-semibold text-zinc-900">Bill to</p>
 				{#if data.customerName}
-					<p class="mt-2 text-base font-medium text-zinc-900">{data.customerName}</p>
+					<p class="mt-2 text-base font-medium text-zinc-900">
+						{data.customerName}
+					</p>
 				{:else}
-					<p class="mt-2 text-base font-medium text-zinc-400">Customer name</p>
+					<p class="mt-2 text-base font-medium text-zinc-400">
+						Customer name
+					</p>
 				{/if}
 				{#if data.customerEmail}
 					<p class="mt-1 text-zinc-600">{data.customerEmail}</p>
+				{/if}
+				{#if data.description.trim()}
+					<p
+						class="mt-2 whitespace-pre-line text-sm leading-relaxed text-zinc-600"
+					>
+						{data.description}
+					</p>
 				{/if}
 			</div>
 		</div>
@@ -138,32 +156,53 @@
 			<p class="mt-6 text-sm text-zinc-600">Thanks for your business!</p>
 		</div>
 
-		{#if data.description.trim()}
+		<!-- {#if data.description.trim()}
 			<p class="mt-8 whitespace-pre-line text-sm leading-relaxed text-zinc-600">
 				{data.description}
 			</p>
-		{/if}
+		{/if} -->
 
 		<!-- Line items -->
 		<div class="mt-10">
 			<table class="w-full border-collapse text-sm">
 				<thead>
 					<tr class="border-y border-zinc-900/10">
-						<th class="py-3 pr-4 text-left font-semibold text-zinc-900">Description</th>
-						<th class="w-14 py-3 pr-4 text-right font-semibold text-zinc-900">Qty</th>
-						<th class="w-28 py-3 pr-4 text-right font-semibold text-zinc-900">Unit price</th>
-						<th class="w-28 py-3 text-right font-semibold text-zinc-900">Amount</th>
+						<th
+							class="py-3 pr-4 text-left font-semibold text-zinc-900"
+							>Description</th
+						>
+						<th
+							class="w-14 py-3 pr-4 text-right font-semibold text-zinc-900"
+							>Qty</th
+						>
+						<th
+							class="w-28 py-3 pr-4 text-right font-semibold text-zinc-900"
+							>Unit price</th
+						>
+						<th
+							class="w-28 py-3 text-right font-semibold text-zinc-900"
+							>Amount</th
+						>
 					</tr>
 				</thead>
 				<tbody>
 					{#each data.items as item (item.id)}
 						<tr class="border-b border-zinc-100">
-							<td class="py-4 pr-4 font-semibold text-zinc-900">{item.name || '—'}</td>
-							<td class="py-4 pr-4 text-right tabular-nums text-zinc-700">{item.quantity}</td>
-							<td class="py-4 pr-4 text-right tabular-nums text-zinc-700">
+							<td class="py-4 pr-4 font-semibold text-zinc-900"
+								>{item.name || "—"}</td
+							>
+							<td
+								class="py-4 pr-4 text-right tabular-nums text-zinc-700"
+								>{item.quantity}</td
+							>
+							<td
+								class="py-4 pr-4 text-right tabular-nums text-zinc-700"
+							>
 								{formatMoney(item.price)}
 							</td>
-							<td class="py-4 text-right tabular-nums font-medium text-zinc-900">
+							<td
+								class="py-4 text-right tabular-nums font-medium text-zinc-900"
+							>
 								{formatMoney(lineTotal(item))}
 							</td>
 						</tr>
@@ -177,20 +216,33 @@
 			<table class="w-full max-w-56 border-collapse text-sm">
 				<tbody>
 					<tr>
-						<td class="py-1.5 pr-6 text-right text-zinc-600">Subtotal</td>
-						<td class="py-1.5 text-right tabular-nums font-medium text-zinc-900">
+						<td class="py-1.5 pr-6 text-right text-zinc-600"
+							>Subtotal</td
+						>
+						<td
+							class="py-1.5 text-right tabular-nums font-medium text-zinc-900"
+						>
 							{formatMoney(total)}
 						</td>
 					</tr>
 					<tr>
-						<td class="py-1.5 pr-6 text-right text-zinc-600">Total</td>
-						<td class="py-1.5 text-right tabular-nums font-medium text-zinc-900">
+						<td class="py-1.5 pr-6 text-right text-zinc-600"
+							>Total</td
+						>
+						<td
+							class="py-1.5 text-right tabular-nums font-medium text-zinc-900"
+						>
 							{formatMoney(total)}
 						</td>
 					</tr>
 					<tr class="border-t border-zinc-200">
-						<td class="py-3 pr-6 text-right font-semibold text-zinc-900">Amount due</td>
-						<td class="py-3 text-right text-base font-semibold tabular-nums text-zinc-900">
+						<td
+							class="py-3 pr-6 text-right font-semibold text-zinc-900"
+							>Amount due</td
+						>
+						<td
+							class="py-3 text-right text-base font-semibold tabular-nums text-zinc-900"
+						>
 							{formatMoney(total)}
 						</td>
 					</tr>
@@ -226,9 +278,9 @@
 		</div> -->
 
 		<p class="mt-12 text-center text-xs text-zinc-400">
-			{data.invoiceNumber || 'Invoice'}
+			{data.invoiceNumber || "Invoice"}
 			<span class="mx-1.5">•</span>
-			{formatMoney(total)} due{data.dueDate.trim() ? ` ${dueLabel}` : ''}
+			{formatMoney(total)} due{data.dueDate.trim() ? ` ${dueLabel}` : ""}
 		</p>
 	</article>
 </div>
