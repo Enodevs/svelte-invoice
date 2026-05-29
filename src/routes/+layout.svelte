@@ -27,6 +27,7 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 	<meta name="theme-color" content="#18181b" />
+	<meta name="robots" content="index, follow" />
 	<link rel="canonical" href={canonical} />
 
 	<meta property="og:site_name" content={siteName} />

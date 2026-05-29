@@ -6,6 +6,7 @@
 		lineTotal,
 		formatMoney,
 		formatDueDate,
+		currencySymbol,
 	} from "$lib/invoiceStore";
 	import { metaDescription, titleWithSite } from "$lib/site-meta";
 
@@ -138,8 +139,7 @@
 		<!-- Amount due + thanks -->
 		<div class="mt-12 border-y border-zinc-200 py-8">
 			<p class="text-2xl font-semibold tracking-tight text-zinc-900">
-				<!-- {formatMoney(total)} due{data.dueDate.trim() ? ` ${dueLabel}` : ''} -->
-				{formatMoney(total)}
+				{formatMoney(total, data.currency)}
 			</p>
 			{#if showPayLink}
 				<p class="mt-2">
@@ -198,12 +198,12 @@
 							<td
 								class="py-4 pr-4 text-right tabular-nums text-zinc-700"
 							>
-								{formatMoney(item.price)}
+								{formatMoney(item.price, data.currency)}
 							</td>
 							<td
 								class="py-4 text-right tabular-nums font-medium text-zinc-900"
 							>
-								{formatMoney(lineTotal(item))}
+								{formatMoney(lineTotal(item), data.currency)}
 							</td>
 						</tr>
 					{/each}
@@ -222,7 +222,7 @@
 						<td
 							class="py-1.5 text-right tabular-nums font-medium text-zinc-900"
 						>
-							{formatMoney(total)}
+							{formatMoney(total, data.currency)}
 						</td>
 					</tr>
 					<tr>
@@ -232,7 +232,7 @@
 						<td
 							class="py-1.5 text-right tabular-nums font-medium text-zinc-900"
 						>
-							{formatMoney(total)}
+							{formatMoney(total, data.currency)}
 						</td>
 					</tr>
 					<tr class="border-t border-zinc-200">
@@ -243,7 +243,7 @@
 						<td
 							class="py-3 text-right text-base font-semibold tabular-nums text-zinc-900"
 						>
-							{formatMoney(total)}
+							{formatMoney(total, data.currency)}
 						</td>
 					</tr>
 				</tbody>
@@ -280,7 +280,7 @@
 		<p class="mt-12 text-center text-xs text-zinc-400">
 			{data.invoiceNumber || "Invoice"}
 			<span class="mx-1.5">•</span>
-			{formatMoney(total)} due{data.dueDate.trim() ? ` ${dueLabel}` : ""}
+			{formatMoney(total, data.currency)} due{data.dueDate.trim() ? ` ${dueLabel}` : ""}
 		</p>
 	</article>
 </div>

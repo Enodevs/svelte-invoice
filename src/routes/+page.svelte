@@ -5,6 +5,7 @@
 		invoiceTotal,
 		lineTotal,
 		formatMoney,
+		currencies,
 		type InvoiceData,
 		type LineItem
 	} from '$lib/invoiceStore';
@@ -220,6 +221,18 @@
 			/>
 		</label>
 		<label class="block">
+			<span class="mb-1 block text-sm text-zinc-600">Currency</span>
+			<select
+				class="w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 shadow-sm"
+				value={$invoiceStore.currency}
+				onchange={(e) => update('currency', e.currentTarget.value)}
+			>
+				{#each currencies as c}
+					<option value={c.code}>{c.symbol} {c.code} — {c.name}</option>
+				{/each}
+			</select>
+		</label>
+		<label class="block">
 			<span class="mb-1 block text-sm text-zinc-600">Memo / description</span>
 			<textarea
 				class="w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 shadow-sm"
@@ -278,7 +291,7 @@
 							/>
 						</label>
 						<div class="flex items-center justify-between gap-2 sm:col-span-2">
-							<span class="text-sm text-zinc-600">{formatMoney(lineTotal(item))}</span>
+							<span class="text-sm text-zinc-600">{formatMoney(lineTotal(item), $invoiceStore.currency)}</span>
 							<button
 								type="button"
 								class="text-sm text-red-600 hover:underline disabled:opacity-40"
@@ -294,7 +307,7 @@
 		</div>
 
 		<p class="border-t border-zinc-200 pt-4 text-right text-lg font-semibold text-zinc-900">
-			Total: {formatMoney(invoiceTotal($invoiceStore))}
+			Total: {formatMoney(invoiceTotal($invoiceStore), $invoiceStore.currency)}
 		</p>
 	</section>
 

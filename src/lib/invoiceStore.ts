@@ -7,6 +7,27 @@ export type LineItem = {
 	price: number;
 };
 
+export type Currency = {
+	code: string;
+	symbol: string;
+	name: string;
+};
+
+export const currencies: Currency[] = [
+	{ code: 'NGN', symbol: '₦', name: 'Nigerian Naira' },
+	{ code: 'USD', symbol: '$', name: 'US Dollar' },
+	{ code: 'EUR', symbol: '€', name: 'Euro' },
+	{ code: 'GBP', symbol: '£', name: 'British Pound' },
+	{ code: 'CAD', symbol: 'CA$', name: 'Canadian Dollar' },
+	{ code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
+	{ code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
+	{ code: 'CNY', symbol: 'CN¥', name: 'Chinese Yuan' },
+	{ code: 'GHS', symbol: 'GH₵', name: 'Ghanaian Cedi' },
+	{ code: 'KES', symbol: 'KSh', name: 'Kenyan Shilling' },
+	{ code: 'ZAR', symbol: 'R', name: 'South African Rand' },
+	{ code: 'XOF', symbol: 'CFA', name: 'West African CFA Franc' },
+];
+
 export type InvoiceData = {
 	logoDataUrl: string | null;
 	businessName: string;
@@ -18,6 +39,7 @@ export type InvoiceData = {
 	customerEmail: string;
 	payOnlineUrl: string;
 	description: string;
+	currency: string;
 	items: LineItem[];
 };
 
@@ -46,6 +68,7 @@ export const defaultInvoiceData = (): InvoiceData => ({
 	customerEmail: '',
 	payOnlineUrl: '',
 	description: '',
+	currency: 'NGN',
 	items: [newItem()]
 });
 
@@ -59,8 +82,16 @@ export function invoiceTotal(data: InvoiceData): number {
 	return data.items.reduce((sum, item) => sum + lineTotal(item), 0);
 }
 
-export function formatMoney(n: number): string {
-	return n.toLocaleString(undefined, { style: 'currency', currency: 'NGN' });
+export function formatMoney(n: number, currencyCode = 'NGN'): string {
+	try {
+		return n.toLocaleString(undefined, { style: 'currency', currency: currencyCode });
+	} catch {
+		return `${currencyCode} ${n.toFixed(2)}`;
+	}
+}
+
+export function currencySymbol(code: string): string {
+	return currencies.find((c) => c.code === code)?.symbol ?? code;
 }
 
 /** `iso` is `yyyy-mm-dd` from `<input type="date">` */
