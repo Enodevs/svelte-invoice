@@ -1,4 +1,7 @@
 import { writable } from 'svelte/store';
+import { browser } from '$app/environment';
+
+const STORAGE_KEY = 'invoice-draft-v1';
 
 export type LineItem = {
 	id: string;
@@ -72,7 +75,47 @@ export const defaultInvoiceData = (): InvoiceData => ({
 	items: [newItem()]
 });
 
-export const invoiceStore = writable<InvoiceData>(defaultInvoiceData());
+function loadInvoice(): InvoiceData {
+	const fallback = defaultInvoiceData();
+	if (!browser) return fallback;
+	try {
+		const raw = localStorage.getItem(STORAGE_KEY);
+		if (!raw) return fallback;
+		const parsed = JSON.parse(raw) as Partial<InvoiceData>;
+		// merge so new fields added later don't break old saved drafts
+		const merged = { ...fallback, ...parsed };
+		if (!Array.isArray(merged.items) || merged.items.length === 0) {
+			merged.items = fallback.items;
+		}
+		return merged;
+	} catch {
+		return fallback;
+	}
+}
+
+function createInvoiceStore() {
+	const store = writable<InvoiceData>(loadInvoice());
+
+	if (browser) {
+		store.subscribe((value) => {
+			try {
+				localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+			} catch {
+				// quota exceeded (usually a big logo) or storage blocked; fail silently
+			}
+		});
+	}
+
+	return {
+		...store,
+		reset() {
+			store.set(defaultInvoiceData());
+			if (browser) localStorage.removeItem(STORAGE_KEY);
+		}
+	};
+}
+
+export const invoiceStore = createInvoiceStore();
 
 export function lineTotal(item: LineItem): number {
 	return item.quantity * item.price;
