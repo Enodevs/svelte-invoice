@@ -76,6 +76,10 @@
 	function goPreview() {
 		goto('/preview');
 	}
+
+	function resetData() {
+	    invoiceStore.reset()
+	}
 </script>
 
 <svelte:head>
@@ -311,6 +315,7 @@
 		</p>
 	</section>
 
+	<div class="flex items-center justify-between">
 	<button
 		type="button"
 		class="rounded-lg bg-zinc-900 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-zinc-800"
@@ -318,4 +323,12 @@
 	>
 		Preview invoice
 	</button>
+	<button
+		type="button"
+		class="rounded-lg border border-red-500 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 shadow-sm transition-colors hover:bg-red-50 focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:outline-none active:bg-red-100"
+		onclick={resetData}
+	>
+		Reset entries
+	</button>
+	</div>
 </div>
