@@ -34,8 +34,8 @@ export const sponsoredLinks: PromoLink[] = [
 		sponsorLine: 'Full stack developer',
 		description:
 			'High-quality, performant web applications with TypeScript, React, Next.js, Python, and modern tooling.',
-		href: 'https://abdullahdevs.vercel.app',
-		imageUrl: 'https://abdullahdevs.vercel.app/abdullah.jpg',
+		href: 'https://abdullahdev.cv',
+		imageUrl: 'https://abdullahdev.cv/abdullah.jpg',
 		imageAlt: 'Isiaq Abdullah — Full Stack Developer',
 		cta: 'View portfolio →'
 	}
